@@ -19,7 +19,10 @@ class Cart implements \App\Service\Cart\Cart
     private UuidInterface $id;
 
     /** @var Collection<int, CartProduct> */
-    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartProduct::class, cascade: [
+        'persist',
+        'remove'
+    ], orphanRemoval: true)]
     private Collection $products;
 
     public function __construct(string $id)
@@ -61,6 +64,10 @@ class Cart implements \App\Service\Cart\Cart
 
     public function addProduct(\App\Entity\Product $product, int $quantity = 1): void
     {
+        if ($this->isFull()) {
+            return;
+        }
+
         $cartProduct = $this->findCartProduct($product);
 
         if ($cartProduct !== null) {
