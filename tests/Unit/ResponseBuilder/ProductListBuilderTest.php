@@ -4,6 +4,7 @@ namespace App\Tests\Unit\ResponseBuilder;
 
 use App\Entity\Product;
 use App\ResponseBuilder\ProductListBuilder;
+use DateTimeImmutable;
 use PHPUnit\Framework\MockObject\MockObject;
 use PHPUnit\Framework\TestCase;
 use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
@@ -40,9 +41,9 @@ class ProductListBuilderTest extends TestCase
     public function test_builds_first_page(): void
     {
         $products = [
-            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200),
-            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400),
-            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500),
+            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200, new DateTimeImmutable('2023-03-07 14:25:01')),
+            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400, new DateTimeImmutable('2023-03-07 14:25:02')),
+            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500, new DateTimeImmutable('2023-03-07 14:25:03')),
         ];
 
         $this->assertEquals([
@@ -60,9 +61,9 @@ class ProductListBuilderTest extends TestCase
     public function test_builds_last_page(): void
     {
         $products = [
-            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200),
-            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400),
-            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500),
+            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200, new DateTimeImmutable('2023-03-07 14:25:01')),
+            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400, new DateTimeImmutable('2023-03-07 14:25:02')),
+            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500, new DateTimeImmutable('2023-03-07 14:25:03')),
         ];
 
         $this->assertEquals([
@@ -80,9 +81,9 @@ class ProductListBuilderTest extends TestCase
     public function test_builds_middle_page(): void
     {
         $products = [
-            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200),
-            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400),
-            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500),
+            new Product('25cc9f5d-7702-4cb0-b6fc-f93b049055ca', 'Product 1', 1200, new DateTimeImmutable('2023-03-07 14:25:01')),
+            new Product('30e4e028-3b38-4cb9-9267-a9e515983337', 'Product 2', 1400, new DateTimeImmutable('2023-03-07 14:25:02')),
+            new Product('f6635017-982f-4544-9ac5-3d57107c0f0d', 'Product 3', 1500, new DateTimeImmutable('2023-03-07 14:25:03')),
         ];
 
         $this->assertEquals([

@@ -3,6 +3,7 @@
 namespace App\Tests\Functional\Controller\Catalog\RemoveController;
 
 use App\Entity\Product;
+use DateTimeImmutable;
 use Doctrine\Common\DataFixtures\AbstractFixture;
 use Doctrine\Persistence\ObjectManager;
 
@@ -13,7 +14,7 @@ class RemoveControllerFixture extends AbstractFixture
 
     public function load(ObjectManager $manager): void
     {
-        $product = new Product(self::PRODUCT_ID, 'Product to remove', 1990);
+        $product = new Product(self::PRODUCT_ID, 'Product to remove', 1990, new DateTimeImmutable('2023-03-07 14:25:01'));
         $manager->persist($product);
         $manager->flush();
     }

@@ -5,6 +5,7 @@ namespace App\Tests\Unit\ResponseBuilder;
 use App\Entity\Cart;
 use App\Entity\Product;
 use App\ResponseBuilder\CartBuilder;
+use DateTimeImmutable;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -34,8 +35,8 @@ class CartBuilderTest extends TestCase
     public function test_builds_cart_with_products(): void
     {
         $cart = new Cart('3db5f857-e5a3-4c8d-a262-37da156c0001');
-        $cart->addProduct(new Product('16e0226c-0ed8-434a-9342-429aefeb98f0', 'Product 1', 1990));
-        $cart->addProduct(new Product('5884ad4c-9ac2-40a5-ba11-1a96156c5889', 'Product 2', 3690));
+        $cart->addProduct(new Product('16e0226c-0ed8-434a-9342-429aefeb98f0', 'Product 1', 1990, new DateTimeImmutable('2023-03-07 14:25:01')));
+        $cart->addProduct(new Product('5884ad4c-9ac2-40a5-ba11-1a96156c5889', 'Product 2', 3690, new DateTimeImmutable('2023-03-07 14:25:02')));
 
         $this->assertEquals([
             'total_price' => 5680,
