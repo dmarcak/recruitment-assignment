@@ -17,7 +17,7 @@ class Product implements \App\Service\Catalog\Product
     private string $name;
 
     #[ORM\Column(type: 'integer', nullable: false)]
-    private string $priceAmount;
+    private int $priceAmount;
 
     public function __construct(string $id, string $name, int $price)
     {
@@ -39,5 +39,10 @@ class Product implements \App\Service\Catalog\Product
     public function getPrice(): int
     {
         return $this->priceAmount;
+    }
+
+    public function equals(Product $product): bool
+    {
+        return $this->id->equals($product->id);
     }
 }

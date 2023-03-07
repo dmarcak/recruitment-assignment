@@ -2,7 +2,6 @@
 
 namespace App\Entity;
 
-use App\Service\Catalog\Product;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\Common\Collections\Collection;
 use Doctrine\ORM\Mapping as ORM;
@@ -19,8 +18,8 @@ class Cart implements \App\Service\Cart\Cart
     #[ORM\Column(type: 'uuid', nullable: false)]
     private UuidInterface $id;
 
-    #[ORM\ManyToMany(targetEntity: 'Product')]
-    #[ORM\JoinTable(name: 'cart_products')]
+    /** @var Collection<int, CartProduct> */
+    #[ORM\OneToMany(mappedBy: 'cart', targetEntity: CartProduct::class, cascade: ['persist', 'remove'], orphanRemoval: true)]
     private Collection $products;
 
     public function __construct(string $id)
@@ -38,7 +37,7 @@ class Cart implements \App\Service\Cart\Cart
     {
         return array_reduce(
             $this->products->toArray(),
-            static fn(int $total, Product $product): int => $total + $product->getPrice(),
+            static fn(int $total, CartProduct $cartProduct): int => $total + $cartProduct->getValue(),
             0
         );
     }
@@ -46,27 +45,55 @@ class Cart implements \App\Service\Cart\Cart
     #[Pure]
     public function isFull(): bool
     {
-        return $this->products->count() >= self::CAPACITY;
+        $totalQuantity = array_reduce(
+            $this->products->toArray(),
+            static fn(int $total, CartProduct $cartProduct): int => $total + $cartProduct->getQuantity(),
+            0
+        );
+
+        return $totalQuantity >= self::CAPACITY;
     }
 
     public function getProducts(): iterable
     {
-        return $this->products->getIterator();
+        return $this->products->map(static fn(CartProduct $cartProduct): Product => $cartProduct->getProduct());
     }
 
-    #[Pure]
-    public function hasProduct(\App\Entity\Product $product): bool
+    public function addProduct(\App\Entity\Product $product, int $quantity = 1): void
     {
-        return $this->products->contains($product);
+        $cartProduct = $this->findCartProduct($product);
+
+        if ($cartProduct !== null) {
+            $cartProduct->increaseQuantity($quantity);
+
+            return;
+        }
+
+        $this->products->add(new CartProduct($product, $this, $quantity));
     }
 
-    public function addProduct(\App\Entity\Product $product): void
+    public function removeProduct(\App\Entity\Product $product, int $quantity = 1): void
     {
-        $this->products->add($product);
+        $cartProduct = $this->findCartProduct($product);
+
+        if ($cartProduct === null) {
+            return;
+        }
+
+        if ($cartProduct->getQuantity() - $quantity > 0) {
+            $cartProduct->decreaseQuantity($quantity);
+        } else {
+            $this->products->removeElement($cartProduct);
+        }
     }
 
-    public function removeProduct(\App\Entity\Product $product): void
+    private function findCartProduct(\App\Entity\Product $product): ?CartProduct
     {
-        $this->products->removeElement($product);
+        /** @var CartProduct|false $cartProduct */
+        $cartProduct = $this->products
+            ->filter(static fn(CartProduct $cartProduct): bool => $cartProduct->isSame($product))
+            ->first();
+
+        return $cartProduct ?: null;
     }
 }
