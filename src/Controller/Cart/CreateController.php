@@ -19,7 +19,7 @@ class CreateController extends AbstractController
 {
     use HandleTrait;
 
-    public function __construct(private CartService $cartService, MessageBusInterface $messageBus) {
+    public function __construct(MessageBusInterface $messageBus) {
         $this->messageBus = $messageBus;
     }
 

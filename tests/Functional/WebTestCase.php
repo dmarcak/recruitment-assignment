@@ -2,7 +2,6 @@
 
 namespace App\Tests\Functional;
 
-use Doctrine\Bundle\FixturesBundle\ORMFixtureInterface;
 use Doctrine\Common\DataFixtures\Executor\ORMExecutor;
 use Doctrine\Common\DataFixtures\FixtureInterface;
 use Doctrine\Common\DataFixtures\Loader;
@@ -24,6 +23,7 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $this->client->disableReboot();
         $this->client->catchExceptions(true);
 
+        /** @phpstan-ignore-next-line */
         $this->entityManager = $this->client->getContainer()->get('doctrine')->getManager();
 
         $metadata = $this->entityManager->getMetadataFactory()->getAllMetadata();
@@ -45,8 +45,11 @@ class WebTestCase extends \Symfony\Bundle\FrameworkBundle\Test\WebTestCase
         $executor->execute($loader->getFixtures());
     }
 
+    /**
+     * @return array<mixed, mixed>
+     */
     protected function getJsonResponse(): array
     {
-        return json_decode($this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
+        return json_decode((string)$this->client->getResponse()->getContent(), true, 512, JSON_THROW_ON_ERROR);
     }
 }

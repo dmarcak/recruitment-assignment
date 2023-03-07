@@ -62,7 +62,7 @@ class Cart implements \App\Service\Cart\Cart
         return $this->products->getIterator();
     }
 
-    public function addProduct(\App\Entity\Product $product, int $quantity = 1): void
+    public function addProduct(Product $product, int $quantity = 1): void
     {
         if ($this->isFull()) {
             return;
@@ -79,7 +79,7 @@ class Cart implements \App\Service\Cart\Cart
         $this->products->add(new CartProduct($product, $this, $quantity));
     }
 
-    public function removeProduct(\App\Entity\Product $product, int $quantity = 1): void
+    public function removeProduct(Product $product, int $quantity = 1): void
     {
         $cartProduct = $this->findCartProduct($product);
 
@@ -94,7 +94,7 @@ class Cart implements \App\Service\Cart\Cart
         }
     }
 
-    private function findCartProduct(\App\Entity\Product $product): ?CartProduct
+    private function findCartProduct(Product $product): ?CartProduct
     {
         /** @var CartProduct|false $cartProduct */
         $cartProduct = $this->products

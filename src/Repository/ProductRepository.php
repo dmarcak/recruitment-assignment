@@ -12,6 +12,7 @@ use Ramsey\Uuid\Uuid;
 
 class ProductRepository implements ProductProvider, ProductService
 {
+    /** @var EntityRepository<\App\Entity\Product> */
     private EntityRepository $repository;
 
     public function __construct(private readonly EntityManagerInterface $entityManager, private readonly Clock $clock)
@@ -59,7 +60,7 @@ class ProductRepository implements ProductProvider, ProductService
         }
     }
 
-    public function changeName(string $id, string $name)
+    public function changeName(string $id, string $name): void
     {
         /** @var \App\Entity\Product|null $product */
         $product = $this->repository->find($id);
@@ -71,7 +72,7 @@ class ProductRepository implements ProductProvider, ProductService
         }
     }
 
-    public function changePrice(string $id, int $price)
+    public function changePrice(string $id, int $price): void
     {
         /** @var \App\Entity\Product|null $product */
         $product = $this->repository->find($id);

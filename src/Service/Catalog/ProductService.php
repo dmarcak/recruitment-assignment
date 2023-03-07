@@ -8,7 +8,7 @@ interface ProductService
 
     public function remove(string $id): void;
 
-    public function changeName(string $id, string $name);
+    public function changeName(string $id, string $name): void;
 
-    public function changePrice(string $id, int $price);
+    public function changePrice(string $id, int $price): void;
 }
