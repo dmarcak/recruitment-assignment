@@ -48,3 +48,17 @@ To Twoja okazja na pokazanie umiejętności, więc jeśli uważasz, że w kodzie
 
 Powodzenia!
 
+## Uwagi i spostrzeżenia
+* generalnie aplikacja ma strukturę mocno "frameworkową", można pójść w kierunku architektury warstwowej
+* nie jestem zwolennikiem zwracania wartości przez commandy, przykład `CreateCart`, jeżeli chemy ID koszyka to możemy je najpierw wygenerować i przekazać do commanda
+* logika zawarta w `Repository/*` tak na prawdę mogłaby być umieszczona w handlerach a faktyczne repozytorium implementować jedynie metody `get` oraz `save`
+* `__invoke` w builderach, no można ale skoro i tak wywołujemy to jawnie to może lepiej `build`, jest krócej 😃
+* w response builderach zamiast wrzucać całą encję, można utworzyć jakieś dedykowane view modele zawierające tylko niezbędne informacje i użyć serializera zamiast budować arrayke ręcznie
+* przepisać adnotacje w kontrolerach na atrybuty
+* przy tworzeniu obiektu `Response` używać named arguments
+* private readonly gdzie się da
+* dodałem phpstana ale można dorzucić więcej narzędzi do statycznej analizy, jakiś phpcs, deptrac
+* odpalić statyczną analize na CI
+
+## Słowo na koniec
+* Jak jest `ShowCartController` to w response jedynie przemnożyłem cenę produktu przez ilość sztuk przez co wygląda to dziwnie. Nie chciałem zmieniać struktury response bo w takim prawdziwym przypadku potrzeba konsultacji z zespołem frontowym itp 😃
