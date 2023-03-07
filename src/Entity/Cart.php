@@ -59,7 +59,7 @@ class Cart implements \App\Service\Cart\Cart
 
     public function getProducts(): iterable
     {
-        return $this->products->map(static fn(CartProduct $cartProduct): Product => $cartProduct->getProduct());
+        return $this->products->getIterator();
     }
 
     public function addProduct(\App\Entity\Product $product, int $quantity = 1): void
