@@ -2,11 +2,13 @@
 
 namespace App\Entity;
 
+use DateTimeImmutable;
 use Doctrine\ORM\Mapping as ORM;
 use Ramsey\Uuid\Uuid;
 use Ramsey\Uuid\UuidInterface;
 
 #[ORM\Entity]
+#[ORM\Index(columns: ['created_at'])]
 class Product implements \App\Service\Catalog\Product
 {
     #[ORM\Id]
@@ -19,11 +21,15 @@ class Product implements \App\Service\Catalog\Product
     #[ORM\Column(type: 'integer', nullable: false)]
     private int $priceAmount;
 
-    public function __construct(string $id, string $name, int $price)
+    #[ORM\Column(type: 'datetime_immutable')]
+    private DateTimeImmutable $createdAt;
+
+    public function __construct(string $id, string $name, int $price, DateTimeImmutable $createdAt)
     {
         $this->id = Uuid::fromString($id);
         $this->name = $name;
         $this->priceAmount = $price;
+        $this->createdAt = $createdAt;
     }
 
     public function getId(): string
