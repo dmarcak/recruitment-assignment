@@ -58,4 +58,28 @@ class ProductRepository implements ProductProvider, ProductService
             $this->entityManager->flush();
         }
     }
+
+    public function changeName(string $id, string $name)
+    {
+        /** @var \App\Entity\Product|null $product */
+        $product = $this->repository->find($id);
+
+        if ($product !== null) {
+            $product->setName($name);
+            $this->entityManager->persist($product);
+            $this->entityManager->flush();
+        }
+    }
+
+    public function changePrice(string $id, int $price)
+    {
+        /** @var \App\Entity\Product|null $product */
+        $product = $this->repository->find($id);
+
+        if ($product !== null) {
+            $product->setPrice($price);
+            $this->entityManager->persist($product);
+            $this->entityManager->flush();
+        }
+    }
 }

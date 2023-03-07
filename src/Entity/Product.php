@@ -37,14 +37,29 @@ class Product implements \App\Service\Catalog\Product
         return $this->id->toString();
     }
 
+    public function setName(string $name): void
+    {
+        $this->name = $name;
+    }
+
     public function getName(): string
     {
         return $this->name;
     }
 
+    public function setPrice(int $price): void
+    {
+        $this->priceAmount = $price;
+    }
+
     public function getPrice(): int
     {
         return $this->priceAmount;
+    }
+
+    public function getCreatedAt(): DateTimeImmutable
+    {
+        return $this->createdAt;
     }
 
     public function equals(Product $product): bool
