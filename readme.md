@@ -59,6 +59,7 @@ Powodzenia!
 * private readonly gdzie się da
 * dodałem phpstana ale można dorzucić więcej narzędzi do statycznej analizy, jakiś phpcs, deptrac
 * odpalić statyczną analize na CI
+* do obsługi cen użyć MoneyPHP zamiast inta
 
 ## Słowo na koniec
 * Jak jest `ShowCartController` to w response jedynie przemnożyłem cenę produktu przez ilość sztuk przez co wygląda to dziwnie. Nie chciałem zmieniać struktury response bo w takim prawdziwym przypadku potrzeba konsultacji z zespołem frontowym itp 😃
