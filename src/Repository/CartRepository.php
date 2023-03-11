@@ -10,14 +10,16 @@ use Ramsey\Uuid\Uuid;
 
 class CartRepository implements CartService
 {
-    public function __construct(private EntityManagerInterface $entityManager) {}
+    public function __construct(private readonly EntityManagerInterface $entityManager)
+    {
+    }
 
     public function addProduct(string $cartId, string $productId): void
     {
         $cart = $this->entityManager->find(\App\Entity\Cart::class, $cartId);
         $product = $this->entityManager->find(Product::class, $productId);
 
-        if ($cart && $product && !$cart->hasProduct($product)) {
+        if ($cart && $product) {
             $cart->addProduct($product);
             $this->entityManager->persist($cart);
             $this->entityManager->flush();
@@ -29,7 +31,7 @@ class CartRepository implements CartService
         $cart = $this->entityManager->find(\App\Entity\Cart::class, $cartId);
         $product = $this->entityManager->find(Product::class, $productId);
 
-        if ($cart && $product && $cart->hasProduct($product)) {
+        if ($cart && $product) {
             $cart->removeProduct($product);
             $this->entityManager->persist($cart);
             $this->entityManager->flush();

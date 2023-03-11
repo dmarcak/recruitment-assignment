@@ -6,6 +6,9 @@ use App\Service\Cart\Cart;
 
 class CartBuilder
 {
+    /**
+     * @return array{total_price: int, products: array<int, array{id: string, name: string, price: int}>}
+     */
     public function __invoke(Cart $cart): array
     {
         $data = [
@@ -13,11 +16,13 @@ class CartBuilder
             'products' => []
         ];
 
-        foreach ($cart->getProducts() as $product) {
+        foreach ($cart->getProducts() as $cartProduct) {
+            $product = $cartProduct->getProduct();
+
             $data['products'][] = [
                 'id' => $product->getId(),
                 'name' => $product->getName(),
-                'price' => $product->getPrice()
+                'price' => $cartProduct->getQuantity() * $product->getPrice()
             ];
         }
 

@@ -24,10 +24,40 @@ class AddProductControllerTest extends WebTestCase
         $response = $this->getJsonResponse();
         self::assertCount(1, $response['products']);
     }
+    public function test_adds_product_to_cart_multiple_times(): void
+    {
+        $this->client->request('PUT', '/cart/5bd88887-7017-4c08-83de-8b5d9abde58c/fbcb8c51-5dcc-4fd4-a4cd-ceb9b400bff7');
+        self::assertResponseStatusCodeSame(202);
+
+        $this->client->request('PUT', '/cart/5bd88887-7017-4c08-83de-8b5d9abde58c/fbcb8c51-5dcc-4fd4-a4cd-ceb9b400bff7');
+        self::assertResponseStatusCodeSame(202);
+
+        $this->client->request('GET', '/cart/5bd88887-7017-4c08-83de-8b5d9abde58c');
+        self::assertResponseStatusCodeSame(200);
+
+        $response = $this->getJsonResponse();
+        self::assertCount(1, $response['products']);
+        self::assertSame(3980, $response['products'][0]['price']);
+    }
 
     public function test_refuses_to_add_fourth_product_to_cart(): void
     {
         $this->client->request('PUT', '/cart/1e82de36-23f3-4ae7-ad5d-616295f1d6c0/00e91390-3af8-4735-bd06-0311e7131757');
+        self::assertResponseStatusCodeSame(422);
+
+        $response = $this->getJsonResponse();
+        self::assertEquals(['error_message' => 'Cart is full.'], $response);
+
+        $this->client->request('GET', '/cart/1e82de36-23f3-4ae7-ad5d-616295f1d6c0');
+        self::assertResponseStatusCodeSame(200);
+
+        $response = $this->getJsonResponse();
+        self::assertCount(3, $response['products']);
+    }
+
+    public function test_refuses_to_add_product_which_already_is_in_cart_to_cart_when_is_full(): void
+    {
+        $this->client->request('PUT', '/cart/1e82de36-23f3-4ae7-ad5d-616295f1d6c0/fbcb8c51-5dcc-4fd4-a4cd-ceb9b400bff7');
         self::assertResponseStatusCodeSame(422);
 
         $response = $this->getJsonResponse();

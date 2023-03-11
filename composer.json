@@ -25,6 +25,12 @@
     ,
     "require-dev": {
         "doctrine/doctrine-fixtures-bundle": "^3.4",
+        "jetbrains/phpstorm-attributes": "^1.0",
+        "phpstan/extension-installer": "^1.2",
+        "phpstan/phpstan": "^1.10",
+        "phpstan/phpstan-doctrine": "^1.3",
+        "phpstan/phpstan-phpunit": "^1.3",
+        "phpstan/phpstan-symfony": "^1.2",
         "phpunit/phpunit": "^9.5",
         "roave/security-advisories": "dev-latest",
         "symfony/browser-kit": "6.0.*",
@@ -35,7 +41,8 @@
         "allow-plugins": {
             "composer/package-versions-deprecated": true,
             "symfony/flex": true,
-            "symfony/runtime": true
+            "symfony/runtime": true,
+            "phpstan/extension-installer": true
         },
         "optimize-autoloader": true,
         "preferred-install": {
@@ -71,7 +78,8 @@
         ],
         "post-update-cmd": [
             "@auto-scripts"
-        ]
+        ],
+        "phpstan": "vendor/bin/phpstan analyse src tests --level=7"
     },
     "conflict": {
         "symfony/symfony": "*"

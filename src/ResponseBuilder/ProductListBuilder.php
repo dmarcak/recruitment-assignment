@@ -7,10 +7,11 @@ use Symfony\Component\Routing\Generator\UrlGeneratorInterface;
 
 class ProductListBuilder
 {
-    public function __construct(private UrlGeneratorInterface $urlGenerator) { }
+    public function __construct(private readonly UrlGeneratorInterface $urlGenerator) { }
 
     /**
-     * @param Product[] $products
+     * @param iterable<Product> $products
+     * @return array{previous_page: string|null, next_page: string|null, count: int, products: array<int, array{id: string, name: string, price: int}>}
      */
     public function __invoke(iterable $products, int $page, int $maxPerPage, int $totalCount): array
     {
